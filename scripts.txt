@@ -1,0 +1,63 @@
+#bash
+# Convert all .m4a files in a folder to .wav
+# Settings: Mono, 22050Hz (Standard for many VITS implementations)
+
+mkdir -p wavs
+for f in *.m4a; do
+    ffmpeg -i "$f" -ac 1 -ar 22050 "wavs/${f%.m4a}.wav"
+done
+
+
+#python script for splits
+
+import os
+import subprocess
+import re
+
+def split_audio(input_file, out_dir, min_silence_len=0.3, silence_thresh=-40):
+    """
+    Finds silence and splits the audio into chunks between 5-10 seconds.
+    """
+    # 1. Detect silence periods using ffmpeg
+    cmd = (
+        f'ffmpeg -i "{input_file}" -af "silencedetect=n={silence_thresh}dB:d={min_silence_len}" '
+        f'-f null - 2>&1'
+    )
+    output = subprocess.check_output(cmd, shell=True).decode()
+    
+    # Extract silence_end times
+    ends = re.findall(r"silence_end: (\d+\.\d+)", output)
+    ends = [float(e) for e in ends]
+    
+    # 2. Determine split points (trying to stay near 5-8 second marks)
+    split_points = [0.0]
+    last_split = 0.0
+    
+    for end in ends:
+        if end - last_split >= 5.0:  # Minimum chunk length
+            split_points.append(end)
+            last_split = end
+
+    # 3. Perform the actual slicing
+    base_name = os.path.splitext(os.path.basename(input_file))[0]
+    for i in range(len(split_points) - 1):
+        start = split_points[i]
+        end = split_points[i+1]
+        duration = end - start
+        
+        # Only keep chunks under 12s to avoid VITS VRAM issues
+        if duration > 12:
+            print(f"Warning: Chunk {i} is long ({duration}s). Consider lowering silence_thresh.")
+            
+        output_path = os.path.join(out_dir, f"{base_name}_{i:03d}.wav")
+        subprocess.run([
+            'ffmpeg', '-y', '-ss', str(start), '-i', input_file, 
+            '-t', str(duration), '-c', 'copy', output_path
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+# Usage
+os.makedirs("chunks", exist_ok=True)
+for file in os.listdir("wavs"):
+    if file.endswith(".wav"):
+        print(f"Processing {file}...")
+        split_audio(f"wavs/{file}", "chunks")
