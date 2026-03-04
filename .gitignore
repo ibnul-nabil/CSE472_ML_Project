@@ -211,3 +211,4 @@ __marimo__/
 *.wav
 *.m4a
 *.mp3
+tuned_model/

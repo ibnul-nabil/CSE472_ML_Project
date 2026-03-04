@@ -1,17 +1,17 @@
 {
-    "output_path": "/tuned_model/m1",
+    "output_path": "tuned_model/m1",
     "logger_uri": null,
-    "run_name": "male_vits_3_26",
+    "run_name": "male_vits_fine_v1",
     "project_name": null,
     "run_description": "\ud83d\udc38Coqui trainer run.",
-    "print_step": 500,
-    "plot_step": 100,
+    "print_step": 100,
+    "plot_step": 50,
     "model_param_stats": false,
     "wandb_entity": null,
     "dashboard_logger": "tensorboard",
     "save_on_interrupt": true,
     "log_model_step": null,
-    "save_step": 5000,
+    "save_step": 1000,
     "save_n_checkpoints": 5,
     "save_checkpoints": true,
     "save_all_best": false,
@@ -27,13 +27,13 @@
     "precision": "fp16",
     "epochs": 100,
     "batch_size": 16,
-    "eval_batch_size": 32,
+    "eval_batch_size": 16,
     "grad_clip": [
-        1000.0,
-        1000.0
+        10.0,
+        10.0
     ],
     "scheduler_after_epoch": true,
-    "lr": 0.001,
+    "lr": 0.00002,
     "optimizer": "AdamW",
     "optimizer_params": {
         "betas": [
@@ -71,7 +71,7 @@
     "text_cleaner": "phoneme_cleaners",
     "enable_eos_bos_chars": false,
     "test_sentences_file": "",
-    "phoneme_cache_path": "/teamspace/studios/this_studio/model/phoneme_cache",
+    "phoneme_cache_path": "tuned_model/phoneme_cache",
     "characters": {
         "characters_class": "TTS.tts.utils.text.characters.IPAPhonemes",
         "vocab_dict": null,
@@ -89,9 +89,9 @@
     "batch_group_size": 0,
     "loss_masking": null,
     "min_audio_len": 1,
-    "max_audio_len": null,
+    "max_audio_len": 999,
     "min_text_len": 1,
-    "max_text_len": null,
+    "max_text_len": 999,
     "compute_f0": false,
     "compute_energy": false,
     "compute_linear_spec": true,
@@ -100,11 +100,11 @@
     "shuffle": false,
     "drop_last": false,
     "datasets": [
-        {
-            "formatter": "",
+        {   
+            "formatter": "ljspeech",
             "dataset_name": "",
-            "path": "/teamspace/studios/this_studio/data/data/",
-            "meta_file_train": "/teamspace/studios/this_studio/data/data/metadata.csv",
+            "path": "dataset/mozilla_s1_fixed/",
+            "meta_file_train": "/home/tr/MEGA/programming2/L4T2/CSE472_ML_Project/Generation/dataset/metadata_fixed.csv",
             "ignored_speakers": null,
             "language": "",
             "phonemizer": "",
@@ -212,7 +212,7 @@
         "condition_dp_on_speaker": true,
         "freeze_encoder": false,
         "freeze_DP": false,
-        "freeze_PE": false,
+        "freeze_PE": true,
         "freeze_flow_decoder": false,
         "freeze_waveform_decoder": false,
         "encoder_sample_rate": null,
@@ -220,8 +220,8 @@
         "reinit_DP": false,
         "reinit_text_encoder": false
     },
-    "lr_gen": 0.0002,
-    "lr_disc": 0.0002,
+    "lr_gen": 0.00002,
+    "lr_disc": 0.00002,
     "lr_scheduler_gen": "ExponentialLR",
     "lr_scheduler_gen_params": {
         "gamma": 0.999875,
@@ -253,6 +253,6 @@
     "use_d_vector_file": false,
     "d_vector_file": null,
     "d_vector_dim": 0,
-    "restore_path": "/teamspace/studios/this_studio/model/male_vits_23_dec_2024-December-23-2024_09+14AM-0000000/checkpoint_140000.pth",
+    "restore_path": "best_model.pth",
     "github_branch": "inside_docker"
 }
