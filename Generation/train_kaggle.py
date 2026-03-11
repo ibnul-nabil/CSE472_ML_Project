@@ -1,4 +1,11 @@
+%%writefile /tmp/script.py
+#training
+#!/usr/bin/python3.10
 import os
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["GIT_PYTHON_REFRESH"] = "quiet"
+
 from trainer import Trainer, TrainerArgs
 from TTS.tts.configs.vits_config import VitsConfig
 from TTS.tts.configs.shared_configs import BaseDatasetConfig
@@ -9,11 +16,10 @@ from TTS.utils.audio import AudioProcessor
 # ============================================================
 # 🔧 EDIT THESE PATHS
 # ============================================================
-BASE_DIR       = "/home/tr/MEGA/programming2/L4T2/mlPrjV2/CSE472_ML_Project"
-RESTORE_PATH   = f"{BASE_DIR}/Generation/best_model.pth"
-DATA_PATH      = f"{BASE_DIR}/Generation/dataset/mozilla_s1_fixed/"
-META_TRAIN     = f"{BASE_DIR}/Generation/dataset/metadata_fixed.csv"
-OUTPUT_PATH    = f"{BASE_DIR}/Generation/tuned_model"
+RESTORE_PATH   = f"/kaggle/input/models/tausifr/chkpt1/pytorch/default/1/best_model.pth"
+DATA_PATH      = f"/kaggle/input/datasets/tausifr/dataset1/mozilla_s1_fixed/"
+META_TRAIN     = f"/kaggle/input/datasets/tausifr/dataset1/mozilla_s1_fixed/metadata_fixed.csv"
+OUTPUT_PATH    = f"/kaggle/working/"
 
 # ============================================================
 # ⚙️ CONFIG
@@ -38,11 +44,11 @@ config = VitsConfig(
     # --- Logging ---
     print_step=100,
     plot_step=50,
-    save_step=1000,
-    save_n_checkpoints=5,
+    save_step=5000,
+    save_n_checkpoints=2,
     save_checkpoints=True,
-    save_all_best=True,
-    save_best_after=500,
+    save_all_best=False,
+    save_best_after=1000,
     print_eval=True,
     run_eval=True,
     dashboard_logger="tensorboard",
@@ -206,6 +212,7 @@ trainer = Trainer(
     model=model,
     train_samples=train_samples,
     eval_samples=eval_samples,
+    # use_ddp=True,  # enable distributed training
 )
 
 trainer.fit()
