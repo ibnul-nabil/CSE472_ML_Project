@@ -1,0 +1,10 @@
+%%bash
+source .venv/bin/activate
+pip list
+pip install numpy
+pip install torch==2.10
+pip install torchaudio==2.10
+pip install TTS==0.22.0
+pip install setuptools==80
+pip install torchcodec==0.10
+sudo apt-get install espeak-ng -y
