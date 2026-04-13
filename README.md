@@ -1,8 +1,9 @@
-# CSE472 ML Project: Audio Deepfake Detection & Generation
+# CSE472 ML Project: Bengali Audio Deepfake Generation 
 
 ## Overview
 This project is focused on the processing, generation, and evaluation of bengali audio deepfakes. It provides tools for preparing datasets, training and fine-tuning models, generating synthetic audio, and evaluating the quality of generated audio.
-Kaggle Notebook : https://www.kaggle.com/code/tausifr/ml-project-4-2
+Kaggle Notebook : https://www.kaggle.com/code/tausifr/ml-project-4-2 <br>
+Trained Models : https://huggingface.co/tsfrsd/vits_voice_clone/tree/main
 
 ---
 
