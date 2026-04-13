@@ -3,7 +3,8 @@
 ## Overview
 This project is focused on the processing, generation, and evaluation of bengali audio deepfakes. It provides tools for preparing datasets, training and fine-tuning models, generating synthetic audio, and evaluating the quality of generated audio.<br>
 Kaggle Notebook : https://www.kaggle.com/code/tausifr/ml-project-4-2 <br>
-Trained Models : https://huggingface.co/tsfrsd/vits_voice_clone/tree/main
+Trained Models : https://huggingface.co/tsfrsd/vits_voice_clone/tree/main <br>
+Deepfake Samples : https://huggingface.co/datasets/tsfrsd/bangla_deepfake_samples
 
 ---
 
